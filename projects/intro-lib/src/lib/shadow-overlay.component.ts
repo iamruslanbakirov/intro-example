@@ -1,21 +1,26 @@
-import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { DATA_TOKEN } from './di-tokens';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'lib-shadow-overlay',
   template: `
     <canvas #canvasElement></canvas>
-  `,
-  styleUrls: ['./shadow-overlay.component.css']
+  `
 })
 export class ShadowOverlayComponent implements OnInit {
   maxSize = 300;
   rem = 16;
   @ViewChild('canvasElement', { static: true }) canvasElement: ElementRef<HTMLCanvasElement>;
 
-  constructor(@Inject(DATA_TOKEN) public elementRef: ElementRef) {}
+  constructor(@Inject(DATA_TOKEN) public elementRef: ElementRef, private ngZone: NgZone) {}
 
   ngOnInit() {
+    fromEvent(document, 'scroll').subscribe(this.render);
+    this.ngZone.onStable.subscribe(this.render);
+  }
+
+  render = (): void => {
     const { nativeElement: canvas }: { nativeElement: HTMLCanvasElement } = this.canvasElement;
 
     const context: CanvasRenderingContext2D = canvas.getContext('2d');
@@ -42,5 +47,5 @@ export class ShadowOverlayComponent implements OnInit {
 
     context.fillStyle = '#00000052';
     context.fill('evenodd');
-  }
+  };
 }

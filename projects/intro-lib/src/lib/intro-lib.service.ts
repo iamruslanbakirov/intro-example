@@ -33,11 +33,6 @@ export class IntroLibService {
     const injector = new PortalInjector(this.injector, new WeakMap([[DATA_TOKEN, dataRef]]));
 
     dataRef.overlayRef.attach(new ComponentPortal(IntroLibComponent, null, injector));
-
-    this.ngZone.onStable.pipe(takeWhile(() => dataRef.overlayRef.hasAttached())).subscribe(() => {
-      (elementRef.nativeElement as HTMLElement).scrollIntoView();
-      dataRef.overlayRef.updatePosition();
-    });
   }
 
   createOverlay(elementRef: ElementRef): OverlayRef {
