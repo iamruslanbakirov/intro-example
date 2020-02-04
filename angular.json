@@ -120,6 +120,41 @@
           }
         }
       }
+    },
+    "intro-lib": {
+      "projectType": "library",
+      "root": "projects/intro-lib",
+      "sourceRoot": "projects/intro-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/intro-lib/tsconfig.lib.json",
+            "project": "projects/intro-lib/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/intro-lib/src/test.ts",
+            "tsConfig": "projects/intro-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/intro-lib/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/intro-lib/tsconfig.lib.json",
+              "projects/intro-lib/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "intro-app"
 }
